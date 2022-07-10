@@ -8,7 +8,9 @@ export enum ClassificacaoMovel{
 
 export enum Rotas{
     Cadastro = '/cadastro',
+    Login = '/login',
     Principal = '/pages',
+    Usuario = '/pages/usuario',
     Comodo = '/pages/comodo',
     Estoque = '/pages/estoque',
     Conta = '/pages/conta',

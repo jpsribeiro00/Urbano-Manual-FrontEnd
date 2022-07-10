@@ -1,60 +1,60 @@
 import { ClassificacaoMovel, Rotas, TipoConta } from "src/enum/enum"
 
 export interface Movel  {
-    id: number,
-    comodoId: number,
+    id?: number,
+    comodoId?: number,
     descricao: String,
     quantidade: String
 }
 
 export interface Comodo {
-    id: number,
+    id?: number,
     classificacaoMovel: ClassificacaoMovel ,
     limpeza: String,
     moveis: Array<Movel>,
-    residenciaId: number,
+    residenciaId?: number,
     tamanho: String
 }
 
 export interface Conta {
-    id: number,
+    id?: number,
     descricao: String,
-    residenciaId: number,
+    residenciaId?: number,
     tipo: TipoConta,
     valor: number
 }
 
 export interface Renda {
-    id: number,
+    id?: number,
     descricao: String,
-    pessoaId: number,
+    pessoaId?: number,
     valor: number
 }
 
 export interface Produto {
-    id: number,
-    estoqueId: number,
+    id?: number,
+    estoqueId?: number,
     nome: String,
     valorUnitario: number
 }
 
 export interface Estoque {
-    id: number,
+    id?: number,
     produtos: Array<Produto>,
-    residencia: Residencia
+    residenciaId?: number
 }
 
 export interface Residencia {
-    id: number,
+    id?: number,
     comodos: Array<Comodo>,
     contas: Array<Conta>,
     endereco: String,
     estoque: Estoque,
-    pessoaId: number
+    pessoaId?: number
 }
 
 export interface Pessoa {
-    id: number,
+    id?: number,
     cpf: String,
     idade: String,
     nome: String,

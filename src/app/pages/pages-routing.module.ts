@@ -7,6 +7,7 @@ import { EstoqueComponent } from './estoque/estoque.component';
 import { ForumComponent } from './forum/forum.component';
 import { PagesComponent } from './pages.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
+import { UsuarioComponent } from './usuario/usuario.component';
 
 const routes: Routes = [
     {
@@ -36,6 +37,10 @@ const routes: Routes = [
           {
             path: 'tutorial',
             component: TutorialComponent,
+          },
+          {
+            path: 'usuario',
+            component: UsuarioComponent,
           }
         ]
     }

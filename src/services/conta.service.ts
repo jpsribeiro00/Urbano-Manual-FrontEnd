@@ -14,23 +14,24 @@ export class ContaService {
   constructor(private http: HttpClient) { }
 
   public get_all(): Observable<Array<Conta>> {
-    return this.http.get<Array<Conta>>(`${this.API}Conta`)
+    return this.http.get<Array<Conta>>(`${this.API}conta`)
   }
 
   public get(id: number): Observable<Conta>{
-    return this.http.get<Conta>(`${this.API}Conta/${id}`)
+    return this.http.get<Conta>(`${this.API}conta/${id}`)
   }
 
-  public post(conta: Conta): Observable<void>{
-    return this.http.post<void>(`${this.API}Conta`, conta)
+  public post(conta: Conta): Observable<Conta>{
+    return this.http.post<Conta>(`${this.API}conta`, conta)
   }
 
   public put(conta: Conta): Observable<void>{
-    return this.http.put<void>(`${this.API}Conta`, conta)
+    return this.http.put<void>(`${this.API}conta`, conta)
   }
 
   public delete(id: number): Observable<void>{
-    return this.http.delete<void>(`${this.API}Conta/${id}`)
+    console.log(id)
+    return this.http.delete<void>(`${this.API}conta/${id}`)
   }
 
 }

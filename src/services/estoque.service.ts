@@ -14,23 +14,23 @@ export class EstoqueService {
   constructor(private http: HttpClient) { }
 
   public get_all(): Observable<Array<Estoque>> {
-    return this.http.get<Array<Estoque>>(`${this.API}Estoque`)
+    return this.http.get<Array<Estoque>>(`${this.API}estoque`)
   }
 
   public get(id: number): Observable<Estoque>{
-    return this.http.get<Estoque>(`${this.API}Estoque/${id}`)
+    return this.http.get<Estoque>(`${this.API}estoque/${id}`)
   }
 
   public post(estoque: Estoque): Observable<void>{
-    return this.http.post<void>(`${this.API}Estoque`, estoque)
+    return this.http.post<void>(`${this.API}estoque`, estoque)
   }
 
   public put(estoque: Estoque): Observable<void>{
-    return this.http.put<void>(`${this.API}Estoque`, estoque)
+    return this.http.put<void>(`${this.API}estoque/${estoque.id}`, estoque)
   }
 
   public delete(id: number): Observable<void>{
-    return this.http.delete<void>(`${this.API}Estoque/${id}`)
+    return this.http.delete<void>(`${this.API}estoque/${id}`)
   }
 
 }

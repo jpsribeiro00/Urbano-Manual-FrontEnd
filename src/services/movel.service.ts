@@ -14,23 +14,23 @@ export class MovelService {
   constructor(private http: HttpClient) { }
 
   public get_all(): Observable<Array<Movel>> {
-    return this.http.get<Array<Movel>>(`${this.API}Movel`)
+    return this.http.get<Array<Movel>>(`${this.API}movel`)
   }
 
   public get(id: number): Observable<Movel>{
-    return this.http.get<Movel>(`${this.API}Movel/${id}`)
+    return this.http.get<Movel>(`${this.API}movel/${id}`)
   }
 
-  public post(movel: Movel): Observable<void>{
-    return this.http.post<void>(`${this.API}Movel`, movel)
+  public post(movel: Movel): Observable<Movel>{
+    return this.http.post<Movel>(`${this.API}movel`, movel)
   }
 
   public put(movel: Movel): Observable<void>{
-    return this.http.put<void>(`${this.API}Movel`, movel)
+    return this.http.put<void>(`${this.API}movel`, movel)
   }
 
   public delete(id: number): Observable<void>{
-    return this.http.delete<void>(`${this.API}Movel/${id}`)
+    return this.http.delete<void>(`${this.API}movel/${id}`)
   }
 
 }

@@ -9,8 +9,23 @@ import { ContaComponent } from './conta/conta.component';
 import { CalculadoraComponent } from './calculadora/calculadora.component';
 import { ForumComponent } from './forum/forum.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
-
-
+import { UsuarioComponent } from './usuario/usuario.component';
+import { SharedModule } from '../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import {MatSelectModule} from '@angular/material/select';
+import { ComponentsModule } from '../components/components.module';
+import { TabelaContaComponent } from './conta/tabela-conta/tabela-conta.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatListModule} from '@angular/material/list';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatTreeModule} from '@angular/material/tree';
+import { CriarComodoComponent } from './comodo/criar-comodo/criar-comodo.component';
 
 @NgModule({
   declarations: [
@@ -20,12 +35,29 @@ import { TutorialComponent } from './tutorial/tutorial.component';
     ContaComponent, 
     CalculadoraComponent, 
     ForumComponent, 
-    TutorialComponent
+    TutorialComponent, 
+    UsuarioComponent, TabelaContaComponent, CriarComodoComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
-    LayoutModule
+    LayoutModule,
+    SharedModule,
+    ComponentsModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    MatListModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatTableModule, 
+    MatSelectModule,
+    MatCardModule,
+    MatSlideToggleModule,
+    MatIconModule,
+    MatDialogModule,
+    MatTreeModule
   ],
   exports: [
     EstoqueComponent

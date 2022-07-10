@@ -11,25 +11,17 @@ import { PessoaService } from 'src/services/pessoa.service';
 export class CadastroComponent implements OnInit {
 
   public formulario: FormGroup;
-
-  public endereco = new FormControl('');
-  public descricaoRenda = new FormControl('');
-  public valorRenda = new FormControl('');
-
-  public enderecos: Array<String> = [];
-  public rendas: Array<Renda> = [];
-
+  
   constructor(private _formBuilder: FormBuilder,
               private _pessoaService: PessoaService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.GeraFormulario();
   }
 
   public GeraFormulario(): void{
 
     this.formulario = this._formBuilder.group({
-      id: 0,
       cpf: ["", [Validators.required]],
       idade: ["", [Validators.required]],
       nome: ["", [Validators.required]],
@@ -40,59 +32,44 @@ export class CadastroComponent implements OnInit {
 
   }
 
-  public AdicionarEndereco(): void{
-    this.enderecos.push(this.endereco.value)
-    this.enderecos = [...this.enderecos]
+  public AdicionarEndereco(endereco: String): void{
+    
+    var residencias = this.formulario.value.residencias;
+    residencias.push(this.CriarResidencia(endereco));
     
     this.formulario.patchValue({
-      residencias: this.RetornarResidencias()
+      residencias: [...residencias]
     })
     
-    this.endereco.patchValue("")
-
   }
-
-  public CriarResidencia(): Residencia{
+  public CriarResidencia(endereco: String): Residencia{
     return {
-      id: 0,
       comodos: [],
       contas: [],
-      endereco: this.endereco.value,
-      estoque: null,
-      pessoaId: 0
+      endereco: endereco,
+      estoque: {
+        produtos: []
+      }
     }
   }
 
-  public RetornarResidencias(): Array<Residencia>{
-
-    var residencias = this.formulario.value.residencias
-    residencias.push(this.CriarResidencia());
-    return residencias
-
-  }
-
-  public AdicionarRenda(): void{
-    this.rendas.push(
-      {
-        id: 0,
-        pessoaId: 0,
-        descricao: this.descricaoRenda.value,
-        valor: this.valorRenda.value
-      }
-    )
+  public AdicionarRenda(renda: Renda): void{
+    let rendas = this.formulario.value.rendas 
+    rendas.push(renda)
 
     this.formulario.patchValue({
-      rendas: this.rendas
+      rendas: rendas
     })
-
-    this.rendas = [...this.rendas]
-    this.descricaoRenda.patchValue("")
-    this.valorRenda.patchValue("")
   }
 
-  public SomaRenda(): number {
-    return this.rendas.map(r => parseFloat(String(r.valor))).reduce((acc, value) => acc + value, 0);
+  public ValidaFormulario(): boolean{
+    if(this.formulario.status == 'INVALID') return false;
+    if(this.formulario.value.rendas.length == 0) return false;
+    if(this.formulario.value.residencias.length == 0) return false;
+
+    return true;
   }
+
 
   public Cadastrar(): void{
     console.log(JSON.stringify(this.formulario.value))

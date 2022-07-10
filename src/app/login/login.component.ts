@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Rotas } from 'src/enum/enum';
+import { InfoUser } from 'src/global/global';
 import { Pessoa } from 'src/models/models';
 import { PessoaService } from 'src/services/pessoa.service';
 
@@ -51,6 +52,7 @@ export class LoginComponent implements OnInit {
   
     if(this.ListaPessoaCadastradas.map(p => { return {cpf: p.cpf, senha: p.senha} })
                                   .some(e => e.cpf == this.formulario.value.cpf && e.senha == this.formulario.value.password)){
+        InfoUser.InserirUsuario(this.ListaPessoaCadastradas.filter(p => p.cpf == this.formulario.value.cpf)[0])        
       return true
     } else {
       return false;

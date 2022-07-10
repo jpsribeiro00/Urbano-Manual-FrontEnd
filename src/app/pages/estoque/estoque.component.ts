@@ -1,4 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { TipoConta } from 'src/enum/enum';
+import { InfoUser } from 'src/global/global';
+import { Estoque, Produto } from 'src/models/models';
+import { ContaService } from 'src/services/conta.service';
+import { EstoqueService } from 'src/services/estoque.service';
+import { PessoaService } from 'src/services/pessoa.service';
+import { ProdutoService } from 'src/services/produto.service';
+
+export interface ProdutoEstoque extends Produto {
+  quantidade: number
+}
 
 @Component({
   selector: 'app-estoque',
@@ -7,9 +19,103 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EstoqueComponent implements OnInit {
 
-  constructor() { }
+  public descricaoProduto = new FormControl('');
+  public valorProduto = new FormControl('');
 
-  ngOnInit(): void {
+  public colunas: String[] = ['quantidade', 'nome', 'valorUnitario', 'valorTotal', 'btnRemover']
+
+  public registros: ProdutoEstoque[] = []
+
+  public estoque: Estoque = null;
+
+  constructor(private _estoqueService: EstoqueService,
+              private _produtoService: ProdutoService,
+              private _pessoaService: PessoaService,
+              private _contaService: ContaService) { }
+
+  async ngOnInit(): Promise<void> {
+    await this._pessoaService.AtualizarUsuarioLogado();
+    this.GerarListaProdutos();
+  }   
+
+  public GerarListaProdutos(){
+    this.estoque = InfoUser.ResidenciaSelecionada.estoque;
+
+    this.registros = InfoUser.ResidenciaSelecionada.estoque.produtos.map(p => {
+      return {
+        ...p,
+        quantidade: 1
+      }
+    })
+  }
+
+  //#region MÉTODOS DE ADIÇÃO E REMOÇÃO DE PRODUTO
+  public CriarObjetoProduto(): Produto{
+    return {
+      id: 0,
+      estoqueId: this.estoque.id,
+      nome: this.descricaoProduto.value,
+      valorUnitario: this.valorProduto.value
+    }
+  }
+
+  public AdicionarProduto(): void{
+    this._produtoService.post(this.CriarObjetoProduto())
+                        .toPromise()
+                        .then(r => this.AdicionarProdutoTabela(r))
+                        .catch(e => console.log(e))
+  }
+
+  public AdicionarProdutoTabela(produto: Produto){
+    this.registros.push({
+      ...produto,
+      quantidade: 1,
+    })
+
+    this.registros = [...this.registros]
+  }
+
+  public RemoverProduto(produto: Produto): void{
+    this._produtoService.delete(produto.id)
+                        .toPromise()
+                        .then(r => this.RemoverProdutoTabela(produto))
+                        .catch(e => console.log(e))
+  }
+
+  public RemoverProdutoTabela(produto: Produto): void{
+
+    this.registros = this.registros.filter(r => r.id != produto.id)
+    this.registros = [...this.registros]
+  }
+
+  //#endregion
+
+  //#region MÉTODOS DE CALCULO
+  public AlterarQuantidade(quantidade: number, index: number){
+    this.registros[index].quantidade = quantidade;
+    this.registros = [...this.registros]
+  }
+
+  public SomaValorLinha(index: number): number{
+    return parseFloat((this.registros[index].quantidade * this.registros[index].valorUnitario).toFixed(2));
+  }
+
+  public SomaTotal(): number{
+    return this.registros.map((r, i) => this.SomaValorLinha(i)).reduce((acc, value) => acc + value, 0);
+  }
+  //#endregion
+
+  public GerarConta(): void{
+    this._contaService.post({
+      id: 0,
+      descricao: 'Repor estoque',
+      residenciaId: InfoUser.ResidenciaSelecionada.id,
+      tipo: TipoConta.VARIAVEL,
+      valor: this.SomaTotal()      
+    })
+    .toPromise()
+    .then(r => console.log(r))
+    .catch(e => console.log(e))
   }
 
 }

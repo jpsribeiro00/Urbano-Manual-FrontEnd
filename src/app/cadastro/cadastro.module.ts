@@ -12,6 +12,7 @@ import {MatTableModule} from '@angular/material/table';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   declarations: [CadastroComponent],
@@ -22,6 +23,8 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
 
     RouterModule,
+
+    ComponentsModule,
 
     MatStepperModule,
     MatToolbarModule,

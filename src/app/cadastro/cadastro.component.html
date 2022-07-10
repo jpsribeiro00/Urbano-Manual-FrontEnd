@@ -33,8 +33,6 @@
             </mat-form-field>
           </div>
         </div>
-
-
       </form>
       
       <div>
@@ -44,39 +42,8 @@
     </mat-step>
 
     <mat-step label="Residencia" state="chat">
-
-
-      <table mat-table [dataSource]="enderecos" style="width: 100%;">
       
-        <ng-container matColumnDef="Endereco">
-          <th mat-header-cell *matHeaderCellDef> Endereço </th>
-          <td mat-cell *matCellDef="let valor"> {{valor}} </td>
-        </ng-container>
-      
-        <tr mat-header-row *matHeaderRowDef="['Endereco']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['Endereco'];"></tr>
-      </table>
-
-
-      <div class="row" style="margin-top: 20px;">
-
-        <div class="col-sm-10">
-          <mat-form-field appearance="fill" style="width: 100%">
-            <mat-label>Endereços</mat-label>
-            <input matInput [formControl]="endereco">
-          </mat-form-field>
-        </div>
-
-        <div class="col-sm-2">
-          <button mat-button 
-                  color="primary"
-                  style="height: 50px; width: 100%;"
-                  (click)="AdicionarEndereco()">Adicionar endereço</button>
-        </div>
-      </div>
-
-
-
+      <app-cadastrar-residencia (emitirNovoEndereco)="AdicionarEndereco($event)"></app-cadastrar-residencia>
 
       <div>
         <button mat-button matStepperPrevious>Voltar</button>
@@ -86,50 +53,9 @@
     </mat-step>
 
     <mat-step label="Renda">
-
-      <table mat-table [dataSource]="rendas" style="width: 100%;">
-
-        <ng-container matColumnDef="descricao">
-          <th mat-header-cell *matHeaderCellDef> Descrição </th>
-          <td mat-cell *matCellDef="let linha"> {{linha.descricao}} </td>
-          <td mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
-        </ng-container>
-      
-
-        <ng-container matColumnDef="valor">
-          <th mat-header-cell *matHeaderCellDef> Valor </th>
-          <td mat-cell *matCellDef="let linha"> {{linha.valor | currency}} </td>
-          <td mat-footer-cell *matFooterCellDef> <b> {{SomaRenda() | currency}} </b> </td>
-        </ng-container>
-      
-        <tr mat-header-row *matHeaderRowDef="['descricao','valor']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['descricao','valor'];"></tr>
-        <tr mat-footer-row *matFooterRowDef="['descricao','valor']"></tr>
-      </table>
-
-      <div class="row" style="margin-top: 20px;">
-        <div class="col-sm-8">
-          <mat-form-field appearance="fill" style="width: 100%;">
-            <mat-label>Descrição</mat-label>
-            <input matInput [formControl]="descricaoRenda">
-          </mat-form-field>    
-        </div>
-        <div class="col-sm-4">
-          <mat-form-field appearance="fill" style="width: 100%;">
-            <mat-label>Valor</mat-label>
-            <input matInput [formControl]="valorRenda">
-          </mat-form-field>
-        </div>
-      </div>
-
-      <button mat-button 
-              color="primary"
-              class="ml-auto"
-              (click)="AdicionarRenda()">Adicionar renda</button>
-
+      <app-cadastrar-renda (emitirNovaRenda)="AdicionarRenda($event)"></app-cadastrar-renda>
     </mat-step>
     
-  
   </mat-horizontal-stepper>
 
 </app-card-default>
@@ -138,6 +64,6 @@
                   [showAuxUm]="false"
                   [showPut]="false"
                   labelBotaoPost="Finalizar!"
-                  [disablePost]="formulario.status == 'INVALID' || rendas.length == 0 || enderecos.length == 0"
+                  [disablePost]="!ValidaFormulario()"
                   (OnClickButtonPost)="Cadastrar()">
 </app-crud-buttons>

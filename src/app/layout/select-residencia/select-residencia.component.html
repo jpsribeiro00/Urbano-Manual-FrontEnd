@@ -1,0 +1,11 @@
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <mat-icon>home</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <mat-radio-group>
+        <mat-radio-button *ngFor="let residencia of residencias" 
+                          [value]="residencia.id"
+                          (click)="SelecionarResidencia(residencia)">{{residencia.endereco}}</mat-radio-button>
+      </mat-radio-group>
+  </mat-menu>
+

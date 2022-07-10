@@ -14,23 +14,24 @@ export class ComodoService {
   constructor(private http: HttpClient) { }
 
   public get_all(): Observable<Array<Comodo>> {
-    return this.http.get<Array<Comodo>>(`${this.API}Comodo/Comodo`)
+    return this.http.get<Array<Comodo>>(`${this.API}comodo`)
   }
 
   public get(id: number): Observable<Comodo>{
-    return this.http.get<Comodo>(`${this.API}Comodo/Comodo/${id}`)
+    return this.http.get<Comodo>(`${this.API}comodo/${id}`)
   }
 
-  public post(comodo: Comodo): Observable<void>{
-    return this.http.post<void>(`${this.API}Comodo/Comodo`, comodo)
+  public post(comodo: Comodo): Observable<Comodo>{
+    console.log(JSON.stringify(comodo))
+    return this.http.post<Comodo>(`${this.API}comodo`, comodo)
   }
 
   public put(comodo: Comodo): Observable<void>{
-    return this.http.put<void>(`${this.API}Comodo/Comodo`, comodo)
+    return this.http.put<void>(`${this.API}comodo/${comodo.id}`, comodo)
   }
 
   public delete(id: number): Observable<void>{
-    return this.http.delete<void>(`${this.API}Comodo/Comodo/${id}`)
+    return this.http.delete<void>(`${this.API}comodo/${id}`)
   }
   
 }
