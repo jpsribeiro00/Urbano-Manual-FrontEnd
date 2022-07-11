@@ -68,3 +68,12 @@ export interface ItemMenu {
     Link: Rotas
     Filhos?: Array<ItemMenu>
 }
+
+export interface Comentario {
+    id: number,
+    titulo: String,
+    mensagem: String,
+    dataPublicacao: String
+    pessoaId: number,
+    nome: String
+}

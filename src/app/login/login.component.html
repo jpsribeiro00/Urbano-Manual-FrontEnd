@@ -8,7 +8,7 @@
   
               <form class="form" [formGroup]="formulario" (ngSubmit)="login()">
                 <mat-form-field class="form__input">
-                  <input matInput placeholder="e-mail" type="text" formControlName="cpf">
+                  <input matInput placeholder="cpf" type="text" formControlName="cpf" [value]="formulario.get('cpf').value | cpf">
                 </mat-form-field>
               
                 <mat-form-field class="form__input">

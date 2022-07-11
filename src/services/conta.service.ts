@@ -30,7 +30,6 @@ export class ContaService {
   }
 
   public delete(id: number): Observable<void>{
-    console.log(id)
     return this.http.delete<void>(`${this.API}conta/${id}`)
   }
 

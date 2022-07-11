@@ -23,7 +23,7 @@
           <div class="col-sm-6">
             <mat-form-field class="example-full-width" appearance="fill" style="width: 100%">
               <mat-label>CPF</mat-label>
-              <input type="text" matInput formControlName="cpf">
+              <input type="text" matInput formControlName="cpf" [value]="formulario.get('cpf').value | cpf">
             </mat-form-field>
           </div>
           <div class="col-sm-6">

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TipoConta } from 'src/enum/enum';
 import { InfoUser } from 'src/global/global';
 import { Conta } from 'src/models/models';
@@ -31,7 +32,8 @@ export class ContaComponent implements OnInit {
 
   constructor(private _formBuilder: FormBuilder,
               private _contaService: ContaService,
-              private _pessoaService: PessoaService
+              private _pessoaService: PessoaService,
+              private _snackBar: MatSnackBar
               ) { }
 
   async ngOnInit(): Promise<void> {
@@ -43,9 +45,6 @@ export class ContaComponent implements OnInit {
     })
 
     await this._pessoaService.AtualizarUsuarioLogado();
-
-    console.log(InfoUser.Usuario)
-
     this.ContasFixas = InfoUser.ResidenciaSelecionada.contas.filter(c => c.tipo === TipoConta[TipoConta.FIXA])
     this.ContasVariaveis = InfoUser.ResidenciaSelecionada.contas.filter(c => c.tipo === TipoConta[TipoConta.VARIAVEL]);
   }
@@ -69,13 +68,16 @@ export class ContaComponent implements OnInit {
               this.ContasVariaveis = [...this.ContasVariaveis]
               break;
     }
+
+    this.MostrarMensagem("Conta adicionada!")
+    this.LimparFormulario();
   }
   
   async Post(): Promise<void>{
     await this._contaService.post(this.GerarConta(this.formulario.value.TipoConta))
                             .toPromise()
                             .then(r => this.AdicionarContaTabela(r))
-                            .catch(e => console.log(e))
+                            .catch(e => this.MostrarMensagem(e.message))
   }
 
   public Delete(conta: Conta, tipoConta: String): void{
@@ -83,19 +85,29 @@ export class ContaComponent implements OnInit {
     switch(tipoConta){
       case 'FIXA':     this._contaService.delete(conta.id)
                                          .toPromise()
-                                         .then(r => console.log(r))
-                                         .catch(e => console.log(e)); 
+                                         .then(r => this.MostrarMensagem("Conta removida!"))
+                                         .catch(e => this.MostrarMensagem(e.message)); 
                        this.ContasFixas = [...this.ContasFixas.filter(c => c != conta)]
                        break;
       case 'VARIAVEL': this._contaService.delete(conta.id)
                                          .toPromise()
-                                         .then(r => console.log(r))
-                                         .catch(e => console.log(e)); 
+                                         .then(r => this.MostrarMensagem("Conta removida!"))
+                                         .catch(e => this.MostrarMensagem(e.message)) 
                        this.ContasVariaveis = [...this.ContasVariaveis.filter(c => c != conta)]
                        break;
     }
     
   }
 
+  public MostrarMensagem(message: string): void{
+    this._snackBar.open(message, "Fechar");
+  }
+
+  public LimparFormulario(): void{
+    this.formulario.patchValue({
+      Descricao: '',
+      Valor: null
+    })
+  }
   
 }

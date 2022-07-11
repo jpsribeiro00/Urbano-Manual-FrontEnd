@@ -22,7 +22,6 @@ export class ComodoService {
   }
 
   public post(comodo: Comodo): Observable<Comodo>{
-    console.log(JSON.stringify(comodo))
     return this.http.post<Comodo>(`${this.API}comodo`, comodo)
   }
 

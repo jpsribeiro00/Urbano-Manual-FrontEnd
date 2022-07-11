@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Rotas } from 'src/enum/enum';
+import { InfoUser } from 'src/global/global';
 import { Renda, Residencia } from 'src/models/models';
 import { PessoaService } from 'src/services/pessoa.service';
 
@@ -13,7 +17,9 @@ export class CadastroComponent implements OnInit {
   public formulario: FormGroup;
   
   constructor(private _formBuilder: FormBuilder,
-              private _pessoaService: PessoaService) { }
+              private _pessoaService: PessoaService,
+              private _router: Router,
+              private _snackBar: MatSnackBar) { }
 
   public ngOnInit(): void {
     this.GeraFormulario();
@@ -72,12 +78,22 @@ export class CadastroComponent implements OnInit {
 
 
   public Cadastrar(): void{
-    console.log(JSON.stringify(this.formulario.value))
-
     this._pessoaService.post(this.formulario.value)
       .toPromise()
-      .then(r => console.log(r))
-      .catch(c => console.log(c))
+      .then(r => {
+        this.MostrarMensagem("Cadastro realizado")
+        InfoUser.InserirUsuario(r)
+        InfoUser.ResidenciaSelecionada = InfoUser.Usuario.residencias[0];      
+        this.redirect()
+      })
+      .catch(e => this.MostrarMensagem(e.message))
   }
 
+  public MostrarMensagem(message: string) {
+    this._snackBar.open(message, "Fechar");
+  }
+
+  public redirect(){
+    this._router.navigate([Rotas.Principal])
+  }
 }

@@ -23,10 +23,6 @@ export class SideComponent implements OnInit {
       Link: Rotas.Conta
     },
     {
-      Descricao: 'Calculadora',
-      Link: Rotas.Calculadora
-    },
-    {
       Descricao: 'Forum',
       Link: Rotas.Forum
     },

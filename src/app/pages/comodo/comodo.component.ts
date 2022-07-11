@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClassificacaoMovel } from 'src/enum/enum';
 import { InfoUser } from 'src/global/global';
 import { Comodo, Movel } from 'src/models/models';
@@ -44,6 +45,7 @@ export class ComodoComponent implements OnInit {
               private _pessoaService: PessoaService,
               private _comodoService: ComodoService,
               private _movelService: MovelService,
+              private _snackBar: MatSnackBar,
               public dialog: MatDialog) { }
 
   async ngOnInit(): Promise<void> {
@@ -92,8 +94,11 @@ export class ComodoComponent implements OnInit {
   public AdicionarComodo(comodo): void {
     this._comodoService.post(comodo)
                        .toPromise()
-                       .then(r => this.comodos.push(r))
-                       .catch(e => console.log(e))
+                       .then(r => {
+                          this.comodos.push(r)
+                          this.MostrarMensagem("Cômodo criado!")
+                       })
+                       .catch(e => this.MostrarMensagem(e.message))
   }
 
   public AlterarComodo(): void {
@@ -102,17 +107,22 @@ export class ComodoComponent implements OnInit {
         limpeza: this.formulario.value.limpeza == true ? "S" : "N"
       })
       .toPromise()
-      .then(r => console.log(r))
-      .catch(e => console.log(e))
+      .then(r => this.MostrarMensagem("Cômodo alterado!"))
+      .catch(e => this.MostrarMensagem(e.message))
   }
 
   public RemoverComodo(): void {
     this._comodoService.delete(this.comodoSelecionado.id)
         .toPromise()
-        .then(r => console.log(r))
-        .catch(e => console.log(e))
+        .then(r => this.MostrarMensagem("Cômodo removido!"))
+        .catch(e => this.MostrarMensagem(e.message))
 
+    this.RemoverComodoLista(this.comodoSelecionado);
     this.comodoSelecionado = null;
+  }
+
+  public RemoverComodoLista(comodo: Comodo){
+    this.comodos = this.comodos.filter(c => c.id != comodo.id)
   }
 
   public SelecionarComodo(evento: any): void{
@@ -123,7 +133,7 @@ export class ComodoComponent implements OnInit {
   public AbrirCadastroComodo(): void{
     this.dialog.open(CriarComodoComponent)
       .afterClosed()
-      .subscribe(r => this.AdicionarComodo(r));
+      .subscribe(r => {if(r) this.AdicionarComodo(r)});
   }
   //#endregion
 
@@ -141,26 +151,34 @@ export class ComodoComponent implements OnInit {
     this._movelService.post(this.CriarObjetoMovel())
                       .toPromise()
                       .then(r => this.AdicionarMovelTabela(r))
+                      .catch(e => this.MostrarMensagem(e.message))
   }
 
   public RemoverMovel(movel: Movel){
     this._movelService.delete(movel.id)
                       .toPromise()
                       .then(r => this.RemoverMovelTabela(movel))
-                      .catch(e => console.log(e))
+                      .catch(e => this.MostrarMensagem(e.message))
   }
 
   public RemoverMovelTabela(movel: Movel): void{
     this.formulario.value.moveis = this.comodoSelecionado.moveis.filter(m => m.id != movel.id)
     this.comodoSelecionado.moveis = this.comodoSelecionado.moveis.filter(m => m.id != movel.id)
     this.comodoSelecionado.moveis = [...this.comodoSelecionado.moveis]
+    this.MostrarMensagem("Movel removido")
   }
 
   public AdicionarMovelTabela(movel: Movel): void{
     this.comodoSelecionado.moveis.push(movel)
     this.comodoSelecionado.moveis = [...this.comodoSelecionado.moveis]
+    this.MostrarMensagem("Movel adicionado")
   }
 
   //#endregion
+
+  public MostrarMensagem(message: string): void{
+    this._snackBar.open(message, "Fechar");
+  }
+
 
 }

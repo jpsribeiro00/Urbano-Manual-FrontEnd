@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TipoConta } from 'src/enum/enum';
 import { InfoUser } from 'src/global/global';
 import { Estoque, Produto } from 'src/models/models';
@@ -31,7 +32,8 @@ export class EstoqueComponent implements OnInit {
   constructor(private _estoqueService: EstoqueService,
               private _produtoService: ProdutoService,
               private _pessoaService: PessoaService,
-              private _contaService: ContaService) { }
+              private _contaService: ContaService,
+              private _snackBar: MatSnackBar) { }
 
   async ngOnInit(): Promise<void> {
     await this._pessoaService.AtualizarUsuarioLogado();
@@ -63,7 +65,7 @@ export class EstoqueComponent implements OnInit {
     this._produtoService.post(this.CriarObjetoProduto())
                         .toPromise()
                         .then(r => this.AdicionarProdutoTabela(r))
-                        .catch(e => console.log(e))
+                        .catch(e => this.MostrarMensagem(e.message))
   }
 
   public AdicionarProdutoTabela(produto: Produto){
@@ -73,19 +75,21 @@ export class EstoqueComponent implements OnInit {
     })
 
     this.registros = [...this.registros]
+    this.LimparCampos();
+    this.MostrarMensagem("Produto adicionado!");
   }
 
   public RemoverProduto(produto: Produto): void{
     this._produtoService.delete(produto.id)
                         .toPromise()
                         .then(r => this.RemoverProdutoTabela(produto))
-                        .catch(e => console.log(e))
+                        .catch(e => this.MostrarMensagem(e.message))
   }
 
   public RemoverProdutoTabela(produto: Produto): void{
-
     this.registros = this.registros.filter(r => r.id != produto.id)
     this.registros = [...this.registros]
+    this.MostrarMensagem("Produto removido!")
   }
 
   //#endregion
@@ -114,8 +118,18 @@ export class EstoqueComponent implements OnInit {
       valor: this.SomaTotal()      
     })
     .toPromise()
-    .then(r => console.log(r))
-    .catch(e => console.log(e))
+    .then(r => this.MostrarMensagem("Conta gerada!"))
+    .catch(e => this.MostrarMensagem(e.message))
   }
+
+  public MostrarMensagem(message: string) {
+    this._snackBar.open(message, "Fechar");
+  }
+
+  public LimparCampos(): void{
+    this.descricaoProduto.patchValue("")
+    this.valorProduto.patchValue("")
+  }
+  
 
 }

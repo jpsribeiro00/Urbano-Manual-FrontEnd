@@ -6,6 +6,7 @@ import { ContaComponent } from './conta/conta.component';
 import { EstoqueComponent } from './estoque/estoque.component';
 import { ForumComponent } from './forum/forum.component';
 import { PagesComponent } from './pages.component';
+import { PrincipalComponent } from './principal/principal.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 
@@ -14,6 +15,10 @@ const routes: Routes = [
         path: '',
         component: PagesComponent,
         children: [
+          {
+            path: 'principal',
+            component: PrincipalComponent,
+          },
           {
             path: 'comodo',
             component: ComodoComponent,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { InfoUser } from 'src/global/global';
 import { Residencia } from 'src/models/models';
 import { PessoaService } from 'src/services/pessoa.service';
@@ -10,15 +11,31 @@ import { PessoaService } from 'src/services/pessoa.service';
 })
 export class SelectResidenciaComponent implements OnInit {
 
-  public residencias: Residencia[] = InfoUser.Usuario.residencias
+  public residencias: Residencia[] = InfoUser.Usuario.residencias;
+  public residenciaSelecionada = InfoUser.ResidenciaSelecionada
 
-  constructor() { }
+  constructor(private _router: Router,
+              private _pessoaService: PessoaService) {
+
+  }
 
   ngOnInit(): void {
+    
   }
 
-  public SelecionarResidencia(residencia: Residencia): void{
-    InfoUser.InserirResidencia(residencia);
+  async SelecionarResidencia(residencia: Residencia): Promise<void>{
+    await this._pessoaService.AtualizarUsuarioLogado();
+    InfoUser.InserirResidencia(InfoUser.Usuario.residencias.filter(r => r.id == residencia.id)[0]);
+    this.Refresh()
   }
 
+  public Refresh(): void {
+
+    const currentRoute = this._router.url;
+
+    this._router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this._router.navigate([currentRoute]);
+    }); 
+
+  }
 }

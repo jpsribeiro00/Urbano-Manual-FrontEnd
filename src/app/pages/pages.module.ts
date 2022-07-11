@@ -25,7 +25,11 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTreeModule} from '@angular/material/tree';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CriarComodoComponent } from './comodo/criar-comodo/criar-comodo.component';
+import { AdicionarComentarioComponent } from './forum/adicionar-comentario/adicionar-comentario.component';
+import { CardComentarioComponent } from './forum/card-comentario/card-comentario.component';
+import { PrincipalComponent } from './principal/principal.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,7 @@ import { CriarComodoComponent } from './comodo/criar-comodo/criar-comodo.compone
     CalculadoraComponent, 
     ForumComponent, 
     TutorialComponent, 
-    UsuarioComponent, TabelaContaComponent, CriarComodoComponent
+    UsuarioComponent, TabelaContaComponent, CriarComodoComponent, AdicionarComentarioComponent, CardComentarioComponent, PrincipalComponent
   ],
   imports: [
     CommonModule,
@@ -57,7 +61,8 @@ import { CriarComodoComponent } from './comodo/criar-comodo/criar-comodo.compone
     MatSlideToggleModule,
     MatIconModule,
     MatDialogModule,
-    MatTreeModule
+    MatTreeModule,
+    MatSnackBarModule
   ],
   exports: [
     EstoqueComponent

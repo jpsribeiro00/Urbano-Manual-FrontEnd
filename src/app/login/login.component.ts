@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Rotas } from 'src/enum/enum';
 import { InfoUser } from 'src/global/global';
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private _formBuilder: FormBuilder,
               private _pessoaService: PessoaService,
-              private _router: Router) { }
+              private _router: Router,
+              private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.formulario = this._formBuilder.group({
@@ -37,7 +39,9 @@ export class LoginComponent implements OnInit {
       await this.RetornaPessoas();
       if(this.VerificaCadastro()){
         this.redirect();
-      };
+      } else {
+        this.MostrarMensagem("Usuário ou senha incorreto!")
+      }
     }
 
   }
@@ -52,18 +56,23 @@ export class LoginComponent implements OnInit {
   
     if(this.ListaPessoaCadastradas.map(p => { return {cpf: p.cpf, senha: p.senha} })
                                   .some(e => e.cpf == this.formulario.value.cpf && e.senha == this.formulario.value.password)){
-        InfoUser.InserirUsuario(this.ListaPessoaCadastradas.filter(p => p.cpf == this.formulario.value.cpf)[0])        
+        InfoUser.InserirUsuario(this.ListaPessoaCadastradas.filter(p => p.cpf == this.formulario.value.cpf)[0])  
+        InfoUser.ResidenciaSelecionada = InfoUser.Usuario.residencias[0];      
       return true
     } else {
       return false;
      }
   }
 
-  public mostrarErros(e): void{
-
+  public MostrarMensagem(message: string) {
+    this._snackBar.open(message, "Fechar");
   }
 
   public redirect(){
-    this._router.navigate([Rotas.Principal])
+    this._router.navigate([`../${Rotas.Principal}`]).then(() => {})
+  }
+
+  public cpfmask = function (rawValue) {
+    return [/[0-9]/, /[0-9]/, /[0-9]/, '.', /[0-9]/, /[0-9]/, /[0-9]/, '.', /[0-9]/, /[0-9]/, /[0-9]/, '-', /[0-9]/, /[0-9]/];
   }
 }

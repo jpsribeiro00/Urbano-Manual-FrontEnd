@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Renda } from 'src/models/models';
 
@@ -10,11 +10,10 @@ import { Renda } from 'src/models/models';
 export class CadastrarRendaComponent implements OnInit {
 
   @Output('emitirNovaRenda') emitirNovaRenda = new EventEmitter();
+  @Input('rendas') rendas: Array<Renda> = [];
 
   public descricaoRenda = new FormControl('');
   public valorRenda = new FormControl('');
-
-  public rendas: Array<Renda> = [];
 
   constructor() { }
 
@@ -23,6 +22,7 @@ export class CadastrarRendaComponent implements OnInit {
 
   public CriaObjetoRenda(): Renda{
     return {
+      pessoaId: null,
       descricao: this.descricaoRenda.value,
       valor: this.valorRenda.value
     }

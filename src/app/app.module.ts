@@ -11,12 +11,18 @@ import { PagesRoutingModule } from './pages/pages-routing.module';
 import { LoginModule } from './login/login.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CadastroModule } from './cadastro/cadastro.module';
-
-// import { ToastrModule } from 'ngx-toastr';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+import { HomeComponent } from './home/home.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +37,7 @@ import { CadastroModule } from './cadastro/cadastro.module';
     RouterModule
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: "pt-BR" }
   ],
   bootstrap: [AppComponent]
 })

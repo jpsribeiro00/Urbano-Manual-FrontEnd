@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -9,8 +9,8 @@ import { FormControl } from '@angular/forms';
 export class CadastrarResidenciaComponent implements OnInit {
 
   @Output('emitirNovoEndereco') emitirNovoEndereco = new EventEmitter();
+  @Input('enderecos') enderecos: Array<String> = [];
 
-  public enderecos: Array<String> = [];
   public endereco = new FormControl('');
 
   constructor() { }

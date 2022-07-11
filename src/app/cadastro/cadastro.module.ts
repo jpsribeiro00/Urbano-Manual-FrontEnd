@@ -9,10 +9,13 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 
+
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ComponentsModule } from '../components/components.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { PipesModule } from 'src/pipes/pipes.module';
 
 @NgModule({
   declarations: [CadastroComponent],
@@ -33,7 +36,9 @@ import { ComponentsModule } from '../components/components.module';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatSnackBarModule,
+    PipesModule
   ]
 })
 export class CadastroModule { }

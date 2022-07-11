@@ -24,7 +24,16 @@
 
       </form>
 
+</app-card-default>
 
+<app-card-default>
+  <app-cadastrar-residencia (emitirNovoEndereco)="AdicionarEndereco($event)"
+                            [enderecos]="ListaEnderecos"></app-cadastrar-residencia>
+</app-card-default>
+
+<app-card-default>
+  <app-cadastrar-renda (emitirNovaRenda)="AdicionarRenda($event)"
+                       [rendas]="ListaRendas"></app-cadastrar-renda>
 </app-card-default>
 
 <app-crud-buttons [showAuxUm]="false"

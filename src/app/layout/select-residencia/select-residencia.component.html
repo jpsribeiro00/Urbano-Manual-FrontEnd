@@ -2,9 +2,11 @@
     <mat-icon>home</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <mat-radio-group>
-        <mat-radio-button *ngFor="let residencia of residencias" 
+    <mat-radio-group class="example-radio-group">
+        <mat-radio-button *ngFor="let residencia of residencias; let i = index" 
                           [value]="residencia.id"
+                          class="example-radio-button"
+                          [checked]="residenciaSelecionada.id == residencia.id"
                           (click)="SelecionarResidencia(residencia)">{{residencia.endereco}}</mat-radio-button>
       </mat-radio-group>
   </mat-menu>
